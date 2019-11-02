@@ -1,0 +1,76 @@
+partner has the following input:
+1. eavesdrop				passively listen (from microphone)
+2. peep						passively see (from camera)
+3. snoop					snoop user's operation (keyboard/mouse, application status)
+4. geolocation				get geolocation information
+5. datetime					get datetime information
+6. network-access			get network-access information
+7. peer						get partner peers information, peer notification
+8. system					get hardware information, os information, running status
+9. user						receive knowledge object from user
+
+partner has the following output(action):
+1. control-app				control local applications (run app, call api, keyboard/mounse simulation)
+2. call-api					call external api
+3. initiate-peer-request	send request to peer and expect response
+4. peer-notify				send notify to peer
+5. tell-user				tell-user knowledge object
+
+
+reflex is the response between "knowledge object"
+
+knowledge object:
+1. need
+   1. knowledge object
+   2. 
+2. 
+
+
+
+alice has the following fixed output:
+1. to-do list
+2. checklist
+3. service element
+
+
+enum priority {
+	IMPORTANT,
+	ORDINARY,
+	TRIVAL,
+}
+
+class ToDoList
+{
+	list<ToDoListItem> item_list;
+}
+
+class ToDoListItem
+{
+	string description;
+	enum priority;
+  string due_time_expression;
+  list<ToDoListItemComment> comment_list;
+
+  datetime create_time;
+  datetime finish_time;											// can be null
+}
+
+class ToDoListItemComment
+{
+	string comment;
+  datetime create_time;
+}
+
+
+todo-list function:
+1. get todo-list of today
+2. get todo-list of this morning
+3. get todo-list of this afternoon
+4. get todo-list of this week
+5. get todo-list of this month
+6. get todo-list
+
+
+
+
+knownledge is a list of sentence.

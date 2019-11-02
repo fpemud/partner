@@ -1,0 +1,10 @@
+[Unit]
+Description=Partner
+
+[Service]
+Type=dbus
+BusName=org.fpemud.Partner
+ExecStart=/usr/sbin/partner-daemon
+
+[Install]
+WantedBy=default.target
