@@ -1,3 +1,10 @@
+partner has the following interact:
+1. user-interact        interact with user, intput and output knowledge object at times
+2. peer-interact        interact with peer
+3. system-interact      interact with system
+4. phephial-interact
+
+
 partner has the following input:
 1. eavesdrop				passively listen (from microphone)
 2. peep						passively see (from camera)
@@ -19,12 +26,10 @@ partner has the following output(action):
 
 reflex is the response between "knowledge object"
 
-knowledge object:
-1. need
-   1. knowledge object
-   2. 
-2. 
 
+
+
+knownledge object is a list of sentence?
 
 
 alice has the following fixed output:
@@ -73,4 +78,9 @@ todo-list function:
 
 
 
-knownledge is a list of sentence.
+
+
+
+
+1. auto format data-copy usb stick (set special volume label)
+2. auto copy from usb (by the above specicial volume label)
