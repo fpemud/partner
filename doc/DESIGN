@@ -84,3 +84,16 @@ todo-list function:
 
 1. auto format data-copy usb stick (set special volume label)
 2. auto copy from usb (by the above specicial volume label)
+
+
+
+
+partner has plugin archtecture, partner should come with hunderds common plugins.
+every people should have his/her private plugin package.
+
+more plugins means more ability of partner, so plugins should never be disabled. 
+the architecture must ensure:
+1. no conflict exists between plugins.
+2. huge plugins number should not impact the performance.
+3. there should be a way to teach partner a plugin's use case.
+
