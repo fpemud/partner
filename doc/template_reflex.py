@@ -1,9 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
-def get_reflex_list():
-    # returns list<reflex-name>
-    assert False
 
 ###############################################################################
 # reflex-property-dict:
@@ -22,12 +19,27 @@ def get_reflex_properties(name):
     assert False
 
 
-def get_reflex_object(fullname):
-    # returns reflex-object
-    assert False
 
 
-class ReflexObject:
+class Stimulus(GLib.Source):
+
+
+
+class Response:
+
+    def action(self):
+
+
+    def response(self):
+        pass
+
+
+
+
+
+
+
+
 
     @property
     def logger(self):

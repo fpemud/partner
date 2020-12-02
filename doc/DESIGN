@@ -97,3 +97,17 @@ the architecture must ensure:
 2. huge plugins number should not impact the performance.
 3. there should be a way to teach partner a plugin's use case.
 
+
+
+
+
+
+reflex:
+
+
+stimulus:
+1. normal stimuls
+2. glib source stimulus
+3. asyncio stimulus
+
+response:

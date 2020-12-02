@@ -6,6 +6,7 @@ import sys
 import glob
 import logging
 import toposort
+from ass_param import AssConst
 
 
 class AssPluginManager:
@@ -13,7 +14,7 @@ class AssPluginManager:
     def __init__(self, param):
         self.param = param
         self.logger = logging.getLogger(self.__module__ + "." + self.__class__.__name__)
-        self.pluginDir = os.path.join(self.param.libDir, "plugins.d")
+        self.pluginDir = os.path.join(AssConst.libDir, "plugins.d")
 
         # load and initialized all plugins
         self.pluginDict = dict()        # dict<plugin-name, (plugin-property-dict, plugin-object)>

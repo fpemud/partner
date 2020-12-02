@@ -22,20 +22,12 @@ if True:
 
 param = AssParam()
 
-try:
-    # fill AssParam according to argument
-    if parseResult.pid_file is not None:
-        param.pidFile = parseResult.pid_file
-    param.logLevel = parseResult.debug_level
+# fill AssParam according to argument
+if parseResult.pid_file is not None:
+    param.pidFile = parseResult.pid_file
+param.logLevel = parseResult.debug_level
 
-    # create tmpDir
-    AssUtil.mkDirAndClear(param.tmpDir)			# fixme
-
-    # start server
-    param.daemon = AssDaemon(param)
-    param.daemon.run()
-finally:
-    if os.path.exists(param.tmpDir):
-        shutil.rmtree(param.tmpDir)
-    if os.path.exists(param.runDir):
-        shutil.rmtree(param.runDir)
+# start server
+daemon = AssDaemon(param)
+daemon.run()
+sys.exit(0)

@@ -2,6 +2,7 @@
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
 import dbus
+from ass_param import AssConst
 
 
 class AssReflexEnvironment:
@@ -9,10 +10,10 @@ class AssReflexEnvironment:
     def __init__(self, param):
         self.param = param
 
-        if self.param.uid != 0:
+        if AssConst.uid != 0:
             try:
                 dbusObj = dbus.SystemBus().get_object("org.freedesktop.login1", "/org/freedesktop/login1")
-                dbusObj.GetUser(self.param.uid, dbus_interface="org.freedesktop.login1.Manager")
+                dbusObj.GetUser(AssConst.uid, dbus_interface="org.freedesktop.login1.Manager")
                 self.is_user_login = True
             except BaseException:
                 self.is_user_login = False

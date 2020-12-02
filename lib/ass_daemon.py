@@ -12,6 +12,7 @@ import configparser
 from gi.repository import GLib
 from dbus.mainloop.glib import DBusGMainLoop
 from ass_util import AssUtil
+from ass_param import AssConst
 from ass_common import AssReflexEnvironment
 from ass_manager_plugin import AssPluginManager
 from ass_manager_reflex import AssReflexManager
@@ -23,9 +24,10 @@ class AssDaemon:
         self.param = param
 
     def run(self):
-        AssUtil.mkDirAndClear(self.param.tmpDir)
-        AssUtil.mkDirAndClear(self.param.runDir)
         try:
+            AssUtil.mkDirAndClear(AssConst.tmpDir)
+            AssUtil.mkDirAndClear(AssConst.runDir)
+
             logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
             logging.getLogger().setLevel(AssUtil.getLoggingLevel(self.param.logLevel))
 
@@ -33,7 +35,7 @@ class AssDaemon:
             self._load_config()
 
             # write pid file
-            with open(self.param.pidFile, "w") as f:
+            with open(AssConst.pidFile, "w") as f:
                 f.write(str(os.getpid()))
 
             # create main loop
@@ -48,7 +50,7 @@ class AssDaemon:
 
             # reflex environment
             self.param.envObj = AssReflexEnvironment(self.param)
-            if self.param.uid != 0:
+            if AssConst.uid != 0:
                 self.userNewHandle = dbus.SystemBus().add_signal_receiver(self._dbus_signal_user_new, dbus_interface="org.freedesktop.login1.Manager", signal_name="UserNew")
                 self.userRemoveHandle = dbus.SystemBus().add_signal_receiver(self._dbus_signal_user_new, dbus_interface="org.freedesktop.login1.Manager", signal_name="UserRemoved")
 
@@ -74,8 +76,8 @@ class AssDaemon:
             if hasattr(self, "userNewHandle"):
                 dbus.SystemBus().remove_signal_receiver(self.userNewHandle)
             logging.shutdown()
-            shutil.rmtree(self.param.runDir)
-            shutil.rmtree(self.param.tmpDir)
+            shutil.rmtree(AssConst.runDir)
+            shutil.rmtree(AssConst.tmpDir)
 
     def _sigHandlerINT(self, signum):
         logging.info("SIGINT received.")
@@ -89,26 +91,26 @@ class AssDaemon:
 
     def _load_config(self):
         self.cfgObj = dict()
-        if os.path.exists(self.param.cfgFile):
+        if os.path.exists(AssConst.cfgFile):
             cfg = configparser.SafeConfigParser()
-            cfg.read(self.param.cfgFile)
+            cfg.read(AssConst.cfgFile)
             for section in cfg.sections():
                 self.cfgObj[section] = dict()
                 for option in cfg.options(section):
                     self.cfgObj[section][option] = AssUtil.stripComment(cfg.get(section, option))
 
     def _dbus_signal_user_new(self, uid, object_path):
-        if uid != self.param.uid:
+        if uid != AssConst.uid:
             return
         assert not self.param.envObj.is_user_login
         self.param.envObj.is_user_login = True
-        logging.info("User %s appears." % (pwd.getpwuid(self.param.uid)[0]))
+        logging.info("User %s appears." % (pwd.getpwuid(AssConst.uid)[0]))
         self.param.envObj.changed()
 
     def _dbus_signal_user_remove(self, uid, object_path):
-        if uid != self.param.uid:
+        if uid != AssConst.uid:
             return
         assert self.param.envObj.is_user_login
         self.param.envObj.is_user_login = False
-        logging.info("User %s disappears." % (pwd.getpwuid(self.param.uid)[0]))
+        logging.info("User %s disappears." % (pwd.getpwuid(AssConst.uid)[0]))
         self.param.envObj.changed()

@@ -6,6 +6,7 @@ import sys
 import pwd
 import glob
 import logging
+from ass_param import AssConst
 
 
 class AssReflexManager:
@@ -15,10 +16,10 @@ class AssReflexManager:
         self.logger = logging.getLogger(self.__module__ + "." + self.__class__.__name__)
 
         # reflex directories
-        if self.param.uid == 0:
+        if AssConst.uid == 0:
             self.reflexDirList = [
-                os.path.join(self.param.etcDir, "reflex.d"),
-                os.path.join(self.param.libDir, "reflex.d"),
+                os.path.expanduser("~/.config/partner/reflex.d"),
+                os.path.join(AssConst.libDir, "reflex.d"),
             ]
         else:
             self.reflexDirList = [
@@ -45,7 +46,7 @@ class AssReflexManager:
             myFullnameSet = None
 
             propDict = self.reflexDict[name][0]
-            if self.param.uid != 0:
+            if AssConst.uid != 0:
                 if propDict.get("need-user-login", False) and not self.param.envObj.is_user_login:
                     continue
 
@@ -126,11 +127,11 @@ class AssReflexManager:
 
     def _init_flex_object(self, fullname, propDict, obj):
         obj.logger = logging.getLogger(self.__module__ + "." + self.__class__.__name__ + "." + fullname)
-        obj.tmpdir = self.param.tmpDir      # fixme
+        obj.tmpdir = AssConst.tmpDir      # fixme
         obj.my_name, obj.my_instance_name = _reflex_split_fullname(fullname)
         obj.my_fullname = fullname
-        if self.param.uid != 0:
-            obj.username = pwd.getpwuid(self.param.uid)[0]
+        if AssConst.uid != 0:
+            obj.username = pwd.getpwuid(AssConst.uid)[0]
 
         for pname in propDict.get("need-plugin", []):
             pobj = self.param.pluginManager.get_plugin_object(pname)
