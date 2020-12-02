@@ -16,7 +16,6 @@ from dbus.mainloop.glib import DBusGMainLoop
 from ass_util import AssUtil
 from ass_param import AssConst
 from ass_common import AssReflexEnvironment
-from ass_manager_plugin import AssPluginManager
 from ass_manager_reflex import AssReflexManager
 
 
@@ -58,7 +57,6 @@ class AssDaemon:
                 self.userRemoveHandle = dbus.SystemBus().add_signal_receiver(self._dbus_signal_user_new, dbus_interface="org.freedesktop.login1.Manager", signal_name="UserRemoved")
 
             # business object
-            self.param.pluginManager = AssPluginManager(self.param)
             self.param.reflexManager = AssReflexManager(self.param)
 
             # start main loop
@@ -71,9 +69,6 @@ class AssDaemon:
             if self.param.reflexManager is not None:
                 self.param.reflexManager.dispose()
                 self.param.reflexManager = None
-            if self.param.pluginManager is not None:
-                self.param.pluginManager.dispose()
-                self.param.pluginManager = None
             if hasattr(self, "userRemoveHandle"):
                 dbus.SystemBus().remove_signal_receiver(self.userRemoveHandle)
             if hasattr(self, "userNewHandle"):

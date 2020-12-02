@@ -2,6 +2,20 @@
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
 
+def Context:
+
+    @property
+    def logger(self):
+        assert False
+
+    @property
+    def tmpdir(self):
+        assert False
+
+
+
+
+
 ###############################################################################
 # reflex-property-dict:
 #     "need-plugin": list<plugin-name>
@@ -17,23 +31,6 @@
 def get_reflex_properties(name):
     # returns reflex-property-dict
     assert False
-
-
-
-
-class Stimulus(GLib.Source):
-
-
-
-class Response:
-
-    def action(self):
-
-
-    def response(self):
-        pass
-
-
 
 
 

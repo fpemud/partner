@@ -30,5 +30,4 @@ class AssParam:
 
         self.cfgObj = None
         self.envObj = None
-        self.pluginManager = None
         self.reflexManager = None
