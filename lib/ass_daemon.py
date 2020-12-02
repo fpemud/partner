@@ -3,7 +3,6 @@
 
 import os
 import sys
-import pwd
 import dbus
 import signal
 import shutil
@@ -15,7 +14,6 @@ from gi.repository import GLib
 from dbus.mainloop.glib import DBusGMainLoop
 from ass_util import AssUtil
 from ass_param import AssConst
-from ass_common import AssReflexEnvironment
 from ass_manager_reflex import AssReflexManager
 
 
@@ -49,12 +47,6 @@ class AssDaemon:
             #     self.param.dbusMainObject = DbusObjectSystem(self.param)
             # else:
             #     self.param.dbusMainObject = DbusObjectSession(self.param)
-
-            # reflex environment
-            self.param.envObj = AssReflexEnvironment(self.param)
-            if AssConst.uid != 0:
-                self.userNewHandle = dbus.SystemBus().add_signal_receiver(self._dbus_signal_user_new, dbus_interface="org.freedesktop.login1.Manager", signal_name="UserNew")
-                self.userRemoveHandle = dbus.SystemBus().add_signal_receiver(self._dbus_signal_user_new, dbus_interface="org.freedesktop.login1.Manager", signal_name="UserRemoved")
 
             # business object
             self.param.reflexManager = AssReflexManager(self.param)
@@ -96,19 +88,3 @@ class AssDaemon:
                 self.cfgObj[section] = dict()
                 for option in cfg.options(section):
                     self.cfgObj[section][option] = AssUtil.stripComment(cfg.get(section, option))
-
-    def _dbus_signal_user_new(self, uid, object_path):
-        if uid != AssConst.uid:
-            return
-        assert not self.param.envObj.is_user_login
-        self.param.envObj.is_user_login = True
-        logging.info("User %s appears." % (pwd.getpwuid(AssConst.uid)[0]))
-        self.param.envObj.changed()
-
-    def _dbus_signal_user_remove(self, uid, object_path):
-        if uid != AssConst.uid:
-            return
-        assert self.param.envObj.is_user_login
-        self.param.envObj.is_user_login = False
-        logging.info("User %s disappears." % (pwd.getpwuid(AssConst.uid)[0]))
-        self.param.envObj.changed()
