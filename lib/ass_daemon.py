@@ -8,6 +8,8 @@ import dbus
 import signal
 import shutil
 import logging
+import asyncio
+import asyncio_glib
 import configparser
 from gi.repository import GLib
 from dbus.mainloop.glib import DBusGMainLoop
@@ -25,22 +27,23 @@ class AssDaemon:
 
     def run(self):
         try:
-            AssUtil.mkDirAndClear(AssConst.tmpDir)
-            AssUtil.mkDirAndClear(AssConst.runDir)
+            AssUtil.prepareTransientDir(AssConst.runDir, AssConst.uid, AssConst.gid, 0o755)
+            AssUtil.prepareTransientDir(AssConst.tmpDir, AssConst.uid, AssConst.gid, 0o755)
 
             logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
             logging.getLogger().setLevel(AssUtil.getLoggingLevel(self.param.logLevel))
+            logging.info("Program begins.")
 
             # load configuration
             self._load_config()
 
             # write pid file
-            with open(AssConst.pidFile, "w") as f:
-                f.write(str(os.getpid()))
+            AssUtil.writePidFile(AssConst.pidFile)
 
             # create main loop
             DBusGMainLoop(set_as_default=True)
-            self.param.mainloop = GLib.MainLoop()
+            asyncio.set_event_loop_policy(asyncio_glib.GLibEventLoopPolicy())
+            self.param.mainloop = asyncio.get_event_loop()
 
             # start DBUS API server
             # if os.getuid() == 0:
@@ -62,7 +65,7 @@ class AssDaemon:
             logging.info("Mainloop begins.")
             GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGINT, self._sigHandlerINT, None)
             GLib.unix_signal_add(GLib.PRIORITY_HIGH, signal.SIGTERM, self._sigHandlerTERM, None)
-            self.param.mainloop.run()
+            self.param.mainloop.run_forever()
             logging.info("Mainloop exits.")
         finally:
             if self.param.reflexManager is not None:
@@ -81,12 +84,12 @@ class AssDaemon:
 
     def _sigHandlerINT(self, signum):
         logging.info("SIGINT received.")
-        self.param.mainloop.quit()
+        self.param.mainloop.stop()
         return True
 
     def _sigHandlerTERM(self, signum):
         logging.info("SIGTERM received.")
-        self.param.mainloop.quit()
+        self.param.mainloop.stop()
         return True
 
     def _load_config(self):
