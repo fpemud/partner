@@ -6,12 +6,10 @@ import os
 
 class AssConst:
 
-    uid = os.getuid()
-
     etcDir = "/etc/partner"
     libDir = "/usr/lib/partner"
     pluginDir = os.path.join(libDir, "plugins")
-    if uid == 0:
+    if os.getuid() == 0:
         tmpDir = "/tmp/partner"
         runDir = "/run/partner"
     else:

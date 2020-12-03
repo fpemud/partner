@@ -15,7 +15,7 @@ class AssReflexManager:
         self.logger = logging.getLogger(self.__module__ + "." + self.__class__.__name__)
 
         # reflex directories
-        if AssConst.uid == 0:
+        if os.getuid() == 0:
             self.reflexDirList = [
                 os.path.expanduser("~/.config/partner/reflex.d"),
                 os.path.join(AssConst.libDir, "reflex.d"),

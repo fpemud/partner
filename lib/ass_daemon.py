@@ -24,8 +24,8 @@ class AssDaemon:
 
     def run(self):
         try:
-            AssUtil.prepareTransientDir(AssConst.runDir, AssConst.uid, AssConst.gid, 0o755)
-            AssUtil.prepareTransientDir(AssConst.tmpDir, AssConst.uid, AssConst.gid, 0o755)
+            AssUtil.prepareTransientDir(AssConst.runDir, os.getuid(), os.getgid(), 0o755)
+            AssUtil.prepareTransientDir(AssConst.tmpDir, os.getuid(), os.getgid(), 0o755)
 
             logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
             logging.getLogger().setLevel(AssUtil.getLoggingLevel(self.param.logLevel))
