@@ -2,9 +2,9 @@
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t -*-
 
 import os
-import sys
 import glob
 import logging
+import importlib
 from ass_param import AssConst
 
 
@@ -36,27 +36,16 @@ class AssReflexManager:
     def _load_all_reflexes(self):
         for dn in self.reflexDirList:
             for fn in glob.glob(os.path.join(dn, "*")):
-                bn = os.path.basename(fn)
-                if bn.endswith(".py"):
-                    bn = bn[:-3]
-                    self._load_reflex_python_script(dn, bn)
+                if fn.endswith(".py"):
+                    self._load_reflex_python_script(dn)
                 else:
                     # FIXME we should support other script in future
                     pass
 
-    def _load_reflex_python_script(self, dirname, pymodule):
-        try:
-            sys.path.append(dirname)
-            context = _ReflexContext()
-            initFunc = None
-            finiFunc = None
-            stimulusFunc = None
-            exec("from %s import init as initFunc" % (pymodule))
-            exec("from %s import fini as finiFunc" % (pymodule))
-            exec("from %s import stimulus as stimulusFunc" % (pymodule))
-            self.reflexDict[pymodule] = [context, initFunc, finiFunc, stimulusFunc]
-        finally:
-            sys.path.remove(dirname)
+    def _load_reflex_python_script(self, fn):
+        context = _ReflexContext()
+        mod = importlib.import_module(fn[:-3])                          # eliminate ".py"
+        self.reflexDict[os.path.basename(fn)[:-3]] = [context, mod]
 
 
 class _ReflexContext:
