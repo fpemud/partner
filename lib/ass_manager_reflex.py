@@ -26,26 +26,46 @@ class AssReflexManager:
             ]
 
         # reflex
-        self.reflexDict = dict()                # dict<reflex-name, [context,initFunc,finiFunc,stimulusFunc]>
+        self.reflexDict = dict()                # dict<reflex-name, (context,modObj)>
         self._load_all_reflexes()
 
+        # reflex initialize and start
+        for reflexName, value in self.reflexDict.items():
+            context, modObj = value
+            modObj.init(context)
+            self.param.mainloop.call_soon(self._run_reflex(context, modObj))
+
     def dispose(self):
-        for pymodule, obj in self.reflexObjDict.items():
-            assert False
+        # reflex finalization
+        for reflexName, value in self.reflexDict.items():
+            context, modObj = value
+            modObj.fini(context)
 
     def _load_all_reflexes(self):
         for dn in self.reflexDirList:
             for fn in glob.glob(os.path.join(dn, "*")):
                 if fn.endswith(".py"):
-                    self._load_reflex_python_script(dn)
+                    self.__load_reflex_python_script(fn)
                 else:
                     # FIXME we should support other script in future
                     pass
 
-    def _load_reflex_python_script(self, fullfn):
+    def __load_reflex_python_script(self, fullfn):
         context = _ReflexContext()
         modName, modObj = AssUtil.loadPythonFile(fullfn)
-        self.reflexDict[fullfn] = [context, modObj]
+        self.reflexDict[fullfn] = (context, modObj)
+        self.logger.info("Reflex (python script %s) loaded." % (fullfn))
+
+    async def _run_reflex(self, context, modObj):
+        while True:
+            brainNode, responseFunc, privateData = await modObj.stimulus(context)
+            # FIXME: decide not do response
+            if responseFunc.__dict__["partner.reflex.response"]:
+                await responseFunc(context, privateData)
+            elif responseFunc.__dict__["partner.reflex.parallel_response"]:
+                self.param.mainloop.call_soon(responseFunc(context, privateData))
+            else:
+                assert False
 
 
 class _ReflexContext:

@@ -41,11 +41,13 @@ def stimulus(func):
 
 
 def response(func):
+    assert not func.__dict__["partner.reflex.parallel_response"]
     func.__dict__["partner.reflex.response"] = True
     return func
 
 
 def parallel_response(func):
+    assert not func.__dict__["partner.reflex.response"]
     func.__dict__["partner.reflex.parallel_response"] = True
     return func
 
