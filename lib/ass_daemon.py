@@ -3,7 +3,6 @@
 
 import os
 import sys
-import dbus
 import signal
 import shutil
 import logging
@@ -61,21 +60,19 @@ class AssDaemon:
             if self.param.reflexManager is not None:
                 self.param.reflexManager.dispose()
                 self.param.reflexManager = None
-            if hasattr(self, "userRemoveHandle"):
-                dbus.SystemBus().remove_signal_receiver(self.userRemoveHandle)
-            if hasattr(self, "userNewHandle"):
-                dbus.SystemBus().remove_signal_receiver(self.userNewHandle)
             logging.shutdown()
             shutil.rmtree(AssConst.runDir)
             shutil.rmtree(AssConst.tmpDir)
 
     def _sigHandlerINT(self, signum):
         logging.info("SIGINT received.")
+        self.param.reflexManager.cancelAll()
         self.param.mainloop.stop()
         return True
 
     def _sigHandlerTERM(self, signum):
         logging.info("SIGTERM received.")
+        self.param.reflexManager.cancelAll()
         self.param.mainloop.stop()
         return True
 

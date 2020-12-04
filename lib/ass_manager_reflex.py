@@ -26,19 +26,26 @@ class AssReflexManager:
             ]
 
         # reflex
-        self.reflexDict = dict()                # dict<reflex-name, (context,modObj)>
+        self.reflexDict = dict()                # dict<reflex-name, [context,module-object,stimulus-task]>
         self._load_all_reflexes()
 
         # reflex initialize and start
         for reflexName, value in self.reflexDict.items():
-            context, modObj = value
+            context = value[0]
+            modObj = value[1]
             modObj.init(context)
-            self.param.mainloop.call_soon(self._run_reflex(context, modObj))
+            value[2] = self.param.mainloop.create_task(self._run_reflex(context, modObj))
+
+    def cancelAll(self):
+        for reflexName, value in self.reflexDict.items():
+            stimulusTask = value[2]
+            stimulusTask.cancel()
 
     def dispose(self):
         # reflex finalization
         for reflexName, value in self.reflexDict.items():
-            context, modObj = value
+            context = value[0]
+            modObj = value[1]
             modObj.fini(context)
 
     def _load_all_reflexes(self):
@@ -53,17 +60,17 @@ class AssReflexManager:
     def __load_reflex_python_script(self, fullfn):
         context = _ReflexContext()
         modName, modObj = AssUtil.loadPythonFile(fullfn)
-        self.reflexDict[fullfn] = (context, modObj)
+        self.reflexDict[fullfn] = [context, modObj, None]
         self.logger.info("Reflex (python script %s) loaded." % (fullfn))
 
     async def _run_reflex(self, context, modObj):
         while True:
             brainNode, responseFunc, privateData = await modObj.stimulus(context)
             # FIXME: decide not do response
-            if responseFunc.__dict__["partner.reflex.response"]:
+            if responseFunc.__dict__.get("partner.reflex.response"):
                 await responseFunc(context, privateData)
-            elif responseFunc.__dict__["partner.reflex.parallel_response"]:
-                self.param.mainloop.call_soon(responseFunc(context, privateData))
+            elif responseFunc.__dict__.get("partner.reflex.parallel_response"):
+                self.param.mainloop.create_task(responseFunc(context, privateData))
             else:
                 assert False
 
