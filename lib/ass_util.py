@@ -8,12 +8,22 @@ import time
 import grp
 import pwd
 import socket
+import importlib
 import re
 import logging
 import stat
 
 
 class AssUtil:
+
+    @staticmethod
+    def loadPythonFile(filename):
+        # returns (mod-name,mod-object)
+        modname = os.path.basename(filename).replace('.py', '').replace('-', '_')
+        spec = importlib.util.spec_from_file_location(modname, filename)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        return (modname, mod)
 
     @staticmethod
     def writePidFile(filename):

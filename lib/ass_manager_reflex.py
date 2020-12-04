@@ -4,7 +4,7 @@
 import os
 import glob
 import logging
-import importlib
+from ass_util import AssUtil
 from ass_param import AssConst
 
 
@@ -42,10 +42,10 @@ class AssReflexManager:
                     # FIXME we should support other script in future
                     pass
 
-    def _load_reflex_python_script(self, fn):
+    def _load_reflex_python_script(self, fullfn):
         context = _ReflexContext()
-        mod = importlib.import_module(fn[:-3])                          # eliminate ".py"
-        self.reflexDict[os.path.basename(fn)[:-3]] = [context, mod]
+        modName, modObj = AssUtil.loadPythonFile(fullfn)
+        self.reflexDict[fullfn] = [context, modObj]
 
 
 class _ReflexContext:
