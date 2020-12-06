@@ -43,6 +43,10 @@ async def trigger_response(brain_node_id, response_coro):
     pass
 
 
+async def notify(brain_node_id):
+    pass
+
+
 # decoration
 def stimulus(func):
     func.__dict__["partner.reflex.stimulus"] = True
