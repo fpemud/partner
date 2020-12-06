@@ -21,33 +21,43 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-"""
-partner.reflex
-
-@author: Fpemud
-@license: GPLv3 License
-@contact: fpemud@sina.com
-"""
-
 import functools
-
-__author__ = "fpemud@sina.com (Fpemud)"
-__version__ = "0.0.1"
+import partner.brain
 
 
+class StimulusError(Exception):
+
+    def __init__(self, brain_node_id):
+        assert isinstance(brain_node_id)
+        self.brain_node_id = brain_node_id
+
+
+class ResponseError(Exception):
+
+    def __init__(self, brain_node_id):
+        assert isinstance(brain_node_id)
+        self.brain_node_id = brain_node_id
+
+
+async def trigger_response(brain_node_id, response_coro):
+    pass
+
+
+# decoration
 def stimulus(func):
     func.__dict__["partner.reflex.stimulus"] = True
     return func
 
 
+# decoration
 def response(func):
     assert not func.__dict__.get("partner.reflex.parallel_response")
     func.__dict__["partner.reflex.response"] = True
     return func
 
 
+# decoration
 def parallel_response(func):
     assert not func.__dict__.get("partner.reflex.response")
     func.__dict__["partner.reflex.parallel_response"] = True
     return func
-

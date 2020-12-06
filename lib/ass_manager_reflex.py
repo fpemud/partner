@@ -65,7 +65,7 @@ class AssReflexManager:
 
     async def _run_reflex(self, context, modObj):
         while True:
-            brainNode, responseFunc, privateData = await modObj.stimulus(context)
+            brainNodeId, responseFunc, privateData = await modObj.stimulus(context)
             # FIXME: decide not do response
             if responseFunc.__dict__.get("partner.reflex.response"):
                 await responseFunc(context, privateData)

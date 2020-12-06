@@ -15,6 +15,24 @@ def Context:
 
 
 
+dependency_has_custom_action(brain_node_id)
+
+dependency_check(brain_node_id)
+
+dependency_fulfill(brain_node_id)
+
+# wait until stimulus is triggered
+# returns None if reflex dependency is broken and the reflex process stops
+# returns (brain-node-id, reponse-coro) if the stimulus is triggered and the reponse should be taken.
+stimulus()
+
+response()
+
+parallel_response()
+
+
+
+
 
 ###############################################################################
 # reflex-property-dict:
