@@ -14,16 +14,18 @@ class AssConst:
 class AssParam:
 
     def __init__(self, userMode):
-        self.mainloop = None
-        self.dbusMainObject = None
+        self.userMode = userMode
 
-        if not userMode:
+        if not self.userMode:
             self.tmpDir = "/tmp/partner"
             self.runDir = "/run/partner"
         else:
             self.tmpDir = "/tmp/user-%d-partner" % (os.getuid())            # fixme
             self.runDir = "/run/user/%d/partner" % (os.getuid())
         self.pidFile = os.path.join(self.runDir, "partner.pid")
+
+        self.mainloop = None
+        self.dbusMainObject = None
 
         self.cfgObj = None
         self.envObj = None
