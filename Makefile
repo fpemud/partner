@@ -29,8 +29,7 @@ uninstall:
 	rm -f "$(DESTDIR)/$(prefix)/sbin/partner"
 	rm -f "$(DESTDIR)/$(prefix)/lib/systemd/system/partner.service"
 	rm -f "$(DESTDIR)/$(prefix)/lib/systemd/user/partner.service"
-	rm -f "$(DESTDIR)/$(prefix)/etc/dbus-1/system.d/org.fpemud.WRT.conf"
+	rm -f "$(DESTDIR)/$(prefix)/etc/dbus-1/system.d/org.fpemud.Partner.conf"
 	rm -rf "$(DESTDIR)/$(prefix)/lib/partner"
-	rm -rf "$(DESTDIR)/etc/partner"
 
 .PHONY: all install uninstall
