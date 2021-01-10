@@ -8,23 +8,22 @@ class AssConst:
 
     etcDir = "/etc/partner"
     libDir = "/usr/lib/partner"
-    pluginDir = os.path.join(libDir, "plugins")
-    if os.getuid() == 0:
-        tmpDir = "/tmp/partner"
-        runDir = "/run/partner"
-    else:
-        tmpDir = "/tmp/user-%d-partner" % (os.getuid())            # fixme
-        runDir = "/run/user/%d/partner" % (os.getuid())
-
     cfgFile = os.path.join(etcDir, "config.ini")
-    pidFile = os.path.join(runDir, "partner.pid")
 
 
 class AssParam:
 
-    def __init__(self):
+    def __init__(self, userMode):
         self.mainloop = None
         self.dbusMainObject = None
+
+        if not userMode:
+            self.tmpDir = "/tmp/partner"
+            self.runDir = "/run/partner"
+        else:
+            self.tmpDir = "/tmp/user-%d-partner" % (os.getuid())            # fixme
+            self.runDir = "/run/user/%d/partner" % (os.getuid())
+        self.pidFile = os.path.join(self.runDir, "partner.pid")
 
         self.cfgObj = None
         self.envObj = None

@@ -23,8 +23,8 @@ class AssDaemon:
 
     def run(self):
         try:
-            AssUtil.prepareTransientDir(AssConst.runDir, os.getuid(), os.getgid(), 0o755)
-            AssUtil.prepareTransientDir(AssConst.tmpDir, os.getuid(), os.getgid(), 0o755)
+            AssUtil.prepareTransientDir(self.param.runDir, os.getuid(), os.getgid(), 0o755)
+            AssUtil.prepareTransientDir(self.param.tmpDir, os.getuid(), os.getgid(), 0o755)
 
             logging.getLogger().addHandler(logging.StreamHandler(sys.stderr))
             logging.getLogger().setLevel(AssUtil.getLoggingLevel(self.param.logLevel))
@@ -34,7 +34,7 @@ class AssDaemon:
             self._load_config()
 
             # write pid file
-            AssUtil.writePidFile(AssConst.pidFile)
+            AssUtil.writePidFile(self.param.pidFile)
 
             # create main loop
             DBusGMainLoop(set_as_default=True)
@@ -61,8 +61,8 @@ class AssDaemon:
                 self.param.reflexManager.dispose()
                 self.param.reflexManager = None
             logging.shutdown()
-            shutil.rmtree(AssConst.runDir)
-            shutil.rmtree(AssConst.tmpDir)
+            shutil.rmtree(self.param.runDir)
+            shutil.rmtree(self.param.tmpDir)
 
     def _sigHandlerINT(self, signum):
         logging.info("SIGINT received.")

@@ -4,7 +4,7 @@ Description=Partner
 [Service]
 Type=dbus
 BusName=org.fpemud.Partner
-ExecStart=/usr/sbin/partner-daemon
+ExecStart=/usr/sbin/partner-daemon --user
 
 [Install]
 WantedBy=default.target

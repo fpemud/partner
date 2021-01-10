@@ -14,6 +14,7 @@ from ass_daemon import AssDaemon
 parseResult = None
 if True:
     argParser = argparse.ArgumentParser()
+    argParser.add_argument("--user", action="store_true")
     argParser.add_argument("--pid-file", dest='pid_file', help="Specify location of a PID file.")
     argParser.add_argument("-d", "--debug-level", dest='debug_level',
                            choices=['CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'], default="INFO",

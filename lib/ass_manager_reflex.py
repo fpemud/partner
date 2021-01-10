@@ -15,14 +15,16 @@ class AssReflexManager:
         self.logger = logging.getLogger(self.__module__ + "." + self.__class__.__name__)
 
         # reflex directories
-        if os.getuid() == 0:
+        if not self.param.userMode:
             self.reflexDirList = [
-                os.path.expanduser("~/.config/partner/reflex.d"),
-                os.path.join(AssConst.libDir, "reflex.d"),
+                os.path.join(AssConst.etcDir, "system-reflex.d"),
+                os.path.join(AssConst.libDir, "system-reflex.d"),
             ]
         else:
             self.reflexDirList = [
                 os.path.expanduser("~/.config/partner/reflex.d"),
+                os.path.join(AssConst.etcDir, "user-reflex.d"),
+                os.path.join(AssConst.libDir, "user-reflex.d"),
             ]
 
         # reflex
@@ -80,6 +82,3 @@ class _ReflexContext:
     def __init__(self):
         self.logger = None
         self.tmpdir = None
-
-
-
