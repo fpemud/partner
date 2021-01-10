@@ -13,6 +13,8 @@ install:
 	find "$(DESTDIR)/$(prefix)/lib/partner" -path "$(DESTDIR)/$(prefix)/lib/partner/plugins" -prune -o -type d | xargs chmod 755
 
 	install -d -m 0755 "$(DESTDIR)/etc/partner"
+	install -d -m 0755 "$(DESTDIR)/etc/partner/system-reflexes.d"
+	install -d -m 0755 "$(DESTDIR)/etc/partner/user-reflexes.d"
 
 	install -d -m 0755 "$(DESTDIR)/$(prefix)/lib/systemd/system"
 	install -m 0644 data/system/partner.service "$(DESTDIR)/$(prefix)/lib/systemd/system"

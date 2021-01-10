@@ -17,14 +17,14 @@ class AssReflexManager:
         # reflex directories
         if not self.param.userMode:
             self.reflexDirList = [
-                os.path.join(AssConst.etcDir, "system-reflex.d"),
-                os.path.join(AssConst.libDir, "system-reflex.d"),
+                os.path.join(AssConst.etcDir, "system-reflexes.d"),
+                os.path.join(AssConst.libDir, "system-reflexes.d"),
             ]
         else:
             self.reflexDirList = [
-                os.path.expanduser("~/.config/partner/reflex.d"),
-                os.path.join(AssConst.etcDir, "user-reflex.d"),
-                os.path.join(AssConst.libDir, "user-reflex.d"),
+                os.path.expanduser("~/.config/partner/reflexes.d"),
+                os.path.join(AssConst.etcDir, "user-reflexes.d"),
+                os.path.join(AssConst.libDir, "user-reflexes.d"),
             ]
 
         # reflex
