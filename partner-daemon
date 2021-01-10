@@ -21,7 +21,7 @@ if True:
                            help="Set output debug message level")
     parseResult = argParser.parse_args()
 
-param = AssParam()
+param = AssParam(parseResult.user)
 
 # fill AssParam according to argument
 if parseResult.pid_file is not None:

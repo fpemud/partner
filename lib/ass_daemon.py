@@ -67,13 +67,13 @@ class AssDaemon:
     def _sigHandlerINT(self, signum):
         logging.info("SIGINT received.")
         self.param.reflexManager.cancelAll()
-        self.param.mainloop.stop()
+        self.param.mainloop.call_soon_threadsafe(self.param.mainloop.stop)
         return True
 
     def _sigHandlerTERM(self, signum):
         logging.info("SIGTERM received.")
         self.param.reflexManager.cancelAll()
-        self.param.mainloop.stop()
+        self.param.mainloop.call_soon_threadsafe(self.param.mainloop.stop)
         return True
 
     def _load_config(self):
