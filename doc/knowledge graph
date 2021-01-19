@@ -3,8 +3,8 @@ common knowledge can be represented by an infinite knowledge graph and a common 
 every aspect specialized knowledge needs "expert module".
 
 partner can master common knowledge, every expert module is a black box to partner.
-partner knows when to query expert module and get the result.
-all the expert module has the same interface.
+partner knows when to ask expert module question and get answer.
+question and answer are all represented by one knowledge-node.
 
 partner should have as much as knowledge in "common knowledge".
 expert module should only for things which are beyond "infinite knowledge graph" module.
@@ -14,4 +14,8 @@ property is metadata data of knowledge, not knowledge itself.
 
 node and relation should both have and only have the follow property:
 1. appear time: when this node appears in the world
-2. 
+2. disappear time:
+3. confidence:
+
+node/relation that has no appear time and disappear time is the same as it does not exist.
+
