@@ -9,11 +9,22 @@ question and answer are all represented by one knowledge-node.
 partner should have as much as knowledge in "common knowledge".
 expert module should only for things which are beyond "infinite knowledge graph" module.
 
+"generator module" is to generate node and relation, so that common knowledge is infinite.
+
+what partner do about common knowledge:
+1. learn: add node/relation from outer source
+2. think: add node/relation using generator module
+3. answer: 
+   1. search common knowledge for a knowldege-node as answer
+   2. think if neccessary
+   3. ask expert module if neccessary
+
+knowledge-node id is not an int/str/uuid, it is a structured data which can identify this knowledge node.
 
 property is metadata data of knowledge, not knowledge itself.
 
 node and relation should both have and only have the follow property:
-1. appear time: when this node appears in the world
+1. appear time: when this node appears in the world (not when the node is created)
 2. disappear time:
 3. confidence:
 
