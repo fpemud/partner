@@ -1,0 +1,17 @@
+we divide knowledge as "common knowledge" and "specialized knowledge".
+common knowledge can be represented by an infinite knowledge graph and a common knowledge process module.
+every aspect specialized knowledge needs "expert module".
+
+partner can master common knowledge, every expert module is a black box to partner.
+partner knows when to query expert module and get the result.
+all the expert module has the same interface.
+
+partner should have as much as knowledge in "common knowledge".
+expert module should only for things which are beyond "infinite knowledge graph" module.
+
+
+property is metadata data of knowledge, not knowledge itself.
+
+node and relation should both have and only have the follow property:
+1. appear time: when this node appears in the world
+2. 
