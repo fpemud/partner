@@ -1,3 +1,17 @@
-node: DIY PC
+ensure:
+*. node: DIY PC
+*. node: cpu
+*. node: memory
+*. node: motherboard
+*. node: power
+*. node: cpu-fan
+*. node: pc-case-fan
+*. node: graphics-adapter
+*. node: harddisk
+*. node: pc-case
+
+*. node: no-case
 
 
+generate:
+*. 
