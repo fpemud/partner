@@ -9,3 +9,6 @@ class KgGenerator:
     def generate(self):
         pass
 
+
+class KgLearner:
+    pass

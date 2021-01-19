@@ -1,0 +1,36 @@
+type node:
+*. node: type-diy-pc
+*. node: type-cpu
+*. node: type-memory
+*. node: type-motherboard
+*. node: type-power
+*. node: type-cpu-fan
+*. node: type-pc-case-fan
+*. node: type-graphics-adapter
+*. node: type-harddisk
+*. node: type-pc-case
+
+type node:
+*. node: motherboard-atx-type
+*. node:
+
+
+
+entity node:
+*. node: none-pc-case
+*. node: a-cpu
+*. node: a-memory
+*. node: a-motherboard
+*. node: a-power
+*. node: a-cpu-fan
+*. node: a-pc-case-fan
+*. node: a-graphics-adapter
+*. node: a-harddisk
+*. node: a-pc-case
+
+
+generate:
+*. a diy-pc entity node
+
+
+
